@@ -169,7 +169,10 @@ export class NgDatepickerComponent
     this.setOptions();
     this.initDayNames();
     this.initYears();
-    this.initMonths();
+    // if (this.options.minDate.getFullYear() === )
+    this.initMonths(6, 5);
+
+    this.writeValue(new Date());
 
     // Check if 'position' property is correct
     if (this.positions.indexOf(this.position) === -1) {
@@ -340,7 +343,7 @@ export class NgDatepickerComponent
     }
   }
 
-  initMonths(): void {
+  initMonths(from: number = 6, to: number = 5): void {
     const months = [
       'Jan',
       'Feb',
@@ -355,9 +358,23 @@ export class NgDatepickerComponent
       'Nov',
       'Dec'
     ];
-    this.months = months.map((month, i) => {
-      return { month, isThisMonth: i ===  getMonth(this.date)};
+    const rangeVal = this.range(from, to);
+    console.log(rangeVal);
+    this.months = rangeVal.map(month => {
+      return { month: months[month], isThisMonth: month ===  getMonth(this.date)};
     });
+    console.log(months);
+  }
+  
+  range(start, end) {
+    const list = [];
+    for (let i = start; i < 12; i++) {
+      list.push(i);
+    }
+    for (let i = 0 ; i <= end; i++) {
+      list.push(i);
+    }
+    return list;
   }
 
   initYears(): void {
